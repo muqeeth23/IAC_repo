@@ -80,36 +80,3 @@ resource "aws_key_pair" "deployer" {
   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDcuRdc9OZdU2VhM5c2a9Ir71CjVRZ6uNZiUlA0v6/K/SU7UjFmxPB2Dlt80pc3G9coPJGL0mJyWKK25iuL8X/s1kweixoojG5Pa5iOc7Fy58HspRoMlnQmaW3GQ4w1c/aa88hxDNjobfKEMnRf1SUEbgMPCUniuTy4RbR8IARM90/19EzG4h++euDiK950/fKFhCDJ+oTlcH16WU6myotTnZZ52NNmY0IWGMcRpBk7PdK+eo3+77bvh7c+RYYfL9KLEP6MNcejZzKaVAN+DwNjvetCYLSoDhON7BJVDGE6fH2Gl0tkn9luXZsGl0JCshPoy+eaLTB+aPgSXUi39vS72mkjuAK4Tt6IYj5k1qwjDoCS8qXYAAPQdUZOUexJuX4aimouENaMdKh7MrKN4Ic6iiHfhErYuwgly4SB5Ux8Yr5dgve81Rt5P2mPcbvcjEp33uRCKyZ3L38qN1e+loAHZriwqOy7ItNYT0TnomkhBnfY14W4VzDjz9YFI7FCTYM= mohammad muqeeth@LAPTOP-6P2JK7PM"
 }
 
-resource "aws_instance" "app-server" {
-  ami           = "ami-0f1dcc636b69a6438"
-  instance_type = "t2.micro"
-  subnet_id     = aws_subnet.pubsn1.id
-  key_name      = aws_key_pair.deployer.id
-  vpc_security_group_ids = [aws_security_group.appserversg.id]
-
-
-  tags = {
-    Name = "appserver"
-  }
-}
-
-
-resource "aws_security_group" "appserversg" {
-  name   = "app-server-sg"
-  vpc_id = aws_vpc.main.id
-
-  ingress {
-    from_port        = 22
-    to_port          = 22
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-}
